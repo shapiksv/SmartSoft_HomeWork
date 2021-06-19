@@ -1,18 +1,15 @@
 package com.example.not.young.fighter.converter;
 
+import com.example.not.young.fighter.enums.TimeFormat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -28,61 +25,94 @@ class TimeConverterTest {
     private TimeConverter timeConverter;
 
     @Test
-    void convertXMLGregorianCalendar() throws DatatypeConfigurationException {
-        XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDateTime.of(2021, 6, 3, 14, 33, 48, 123456789).toString());
-        assertEquals("2021.06.03", timeConverter.converter(date, "yyyy.MM.dd"));
+    void convertXMLGregorianCalendar() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.XML_GREGORIAN_CALENDAR) instanceof XMLGregorianCalendar);
     }
 
     @Test
-    void convertLocalDate() {
-        LocalDate localDate = LocalDate.of(2021, 6, 3);
-        assertEquals("2021.06.03", timeConverter.converter(localDate, "yyyy.MM.dd"));
+    void convertLocalDate() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.LOCAL_DATE) instanceof LocalDate);
     }
 
     @Test
-    void convertLocalDateTime() {
-        LocalDateTime localDateTime = LocalDateTime.of(2021, 6, 3, 14, 33, 48, 123456789);
-        assertEquals("2021.06.03", timeConverter.converter(localDateTime, "yyyy.MM.dd"));
+    void convertLocalDateTime() throws Exception{
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.LOCAL_DATE_TIME) instanceof LocalDateTime);
     }
 
     @Test
-    void convertOffsetDateTime() {
-        OffsetDateTime offsetDateTime = OffsetDateTime.of(2021, 6, 3, 12,22,22, 2222, ZoneOffset.UTC);
-        assertEquals("2021.06.03", timeConverter.converter(offsetDateTime, "yyyy.MM.dd"));
+    void convertOffsetDateTime() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.OFFSET_DATE_TIME) instanceof OffsetDateTime);
     }
 
     @Test
-    void convertInstant() {
-        Instant instant = Instant.parse("2021-06-03T10:15:30.00Z");
-        assertEquals("2021.06.03", timeConverter.converter(instant, "yyyy.MM.dd"));
+    void convertInstant() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.INSTANT) instanceof Instant);
     }
 
     @Test
-    void convertCalendar() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(Date.from(Instant.parse("2021-06-03T10:15:30.00Z")));
-        assertEquals("2021.06.03", timeConverter.converter(calendar, "yyyy.MM.dd"));
+    void convertCalendar() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.CALENDAR) instanceof Calendar);
     }
 
     @Test
-    void convertDate() {
-        Date date = Date.from(Instant.parse("2021-06-03T10:15:30.00Z"));
-        assertEquals("2021.06.03", timeConverter.converter(date, "yyyy.MM.dd"));
+    void convertDate() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.DATE) instanceof Date);
     }
 
     @Test
-    void convertGregorianCalendar() {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(Date.from(Instant.parse("2021-06-03T10:15:30.00Z")));
-        assertEquals("2021.06.03", timeConverter.converter(calendar, "yyyy.MM.dd"));
+    void convertGregorianCalendar() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.GREGORIAN_CALENDAR) instanceof GregorianCalendar);
     }
 
     @Test
-    void convertSqDate() {
-        java.sql.Date date = java.sql.Date.valueOf("2021-06-03");;
-
-        assertEquals("2021.06.03", timeConverter.converter(date, "yyyy.MM.dd"));
+    void convertSqDate() throws Exception {
+        assertTrue(timeConverter.converter("2021.06.15", TimeFormat.SQ_DATE) instanceof java.sql.Date);
     }
 
+
+    @Test
+    void convertXMLGregorianCalendarWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.XML_GREGORIAN_CALENDAR) instanceof XMLGregorianCalendar);
+    }
+
+    @Test
+    void convertLocalDateWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.LOCAL_DATE) instanceof LocalDate);
+    }
+
+    @Test
+    void convertLocalDateTimeWithSwitch() throws Exception{
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.LOCAL_DATE_TIME) instanceof LocalDateTime);
+    }
+
+    @Test
+    void convertOffsetDateTimeWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.OFFSET_DATE_TIME) instanceof OffsetDateTime);
+    }
+
+    @Test
+    void convertInstantWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.INSTANT) instanceof Instant);
+    }
+
+    @Test
+    void convertCalendarWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.CALENDAR) instanceof Calendar);
+    }
+
+    @Test
+    void convertDateWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.DATE) instanceof Date);
+    }
+
+    @Test
+    void convertGregorianCalendarWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.GREGORIAN_CALENDAR) instanceof GregorianCalendar);
+    }
+
+    @Test
+    void convertSqDateWithSwitch() throws Exception {
+        assertTrue(timeConverter.convertWithSwitch("2021.06.15", TimeFormat.SQ_DATE) instanceof java.sql.Date);
+    }
 
 }
